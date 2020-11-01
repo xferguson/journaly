@@ -4,9 +4,11 @@ import { ApolloQueryResult } from '@apollo/client'
 import {
   LanguagesFormDataQuery,
   Language as LanguageType,
-  LanguageRelation as LanguageRelationType,
+  LanguageNative as LanguageNativeType,
+  LanguageLearning as LanguageLearningType,
 } from '../../../generated/graphql'
-import LanguageFormField from '../../../components/LanguageFormField'
+import NativeLanguageFormField from '../../../components/NativeLanguageFormField'
+import LearningLanguageFormField from '../../../components/LearningLanguageFormField'
 
 type Props = {
   languageFormData: LanguagesFormDataQuery
@@ -16,7 +18,9 @@ type Props = {
 const WelcomeModalBody: React.FC<Props> = ({ languageFormData, refetch }) => {
   const { t } = useTranslation('settings')
   const languages = languageFormData.languages as LanguageType[]
-  const languageRelations = languageFormData.currentUser?.languages as LanguageRelationType[]
+  const nativeLanguages = languageFormData.currentUser?.languagesNative as LanguageNativeType[]
+  const learningLanguages = languageFormData.currentUser
+    ?.languagesLearning as LanguageLearningType[]
 
   return (
     <div>
@@ -27,13 +31,24 @@ const WelcomeModalBody: React.FC<Props> = ({ languageFormData, refetch }) => {
       </p>
 
       <div className="languages-form-field">
-        <label className="language-label" htmlFor="learning-languages">
-          {t('profile.languages.welcomeModalFormLabel')}
+        <label className="language-label" htmlFor="native-languages">
+          {t('profile.languages.nativeLanguagesLabel')}
         </label>
 
-        <LanguageFormField
+        <NativeLanguageFormField
           languages={languages}
-          languageRelations={languageRelations}
+          nativeLanguages={nativeLanguages}
+          refetch={refetch}
+        />
+      </div>
+      <div className="languages-form-field">
+        <label className="language-label" htmlFor="learning-languages">
+          {t('profile.languages.learningLanguagesLabel')}
+        </label>
+
+        <LearningLanguageFormField
+          languages={languages}
+          learningLanguages={learningLanguages}
           refetch={refetch}
         />
       </div>

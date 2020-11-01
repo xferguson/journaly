@@ -1,23 +1,29 @@
 import React from 'react'
+import { ApolloQueryResult } from '@apollo/client'
 import { useTranslation } from '../../../config/i18n'
 import {
-  LanguageFragmentFragment as LanguageType,
-  LanguageRelation as LanguageRelationType,
+  LanguagesFormDataQuery,
+  Language as LanguageType,
+  LanguageNative as LanguageNativeType,
+  LanguageLearning as LanguageLearningType,
 } from '../../../generated/graphql'
 
-import LanguageFormField from '../../../components/LanguageFormField'
+import NativeLanguageFormField from '../../../components/NativeLanguageFormField'
+import LearningLanguageFormField from '../../../components/LearningLanguageFormField'
 import SettingsForm from '../../../components/Dashboard/Settings/SettingsForm'
 import SettingsFieldset from '../../../components/Dashboard/Settings/SettingsFieldset'
 
 type Props = {
   languages: LanguageType[]
-  languageRelations: LanguageRelationType[]
-  refetch: () => void
+  nativeLanguages: LanguageNativeType[]
+  learningLanguages: LanguageLearningType[]
+  refetch: () => Promise<ApolloQueryResult<LanguagesFormDataQuery>>
 }
 
 const LanguagesForm: React.FC<Props> = ({
   languages,
-  languageRelations,
+  nativeLanguages,
+  learningLanguages,
   refetch,
 }) => {
   const { t } = useTranslation('settings')
@@ -28,13 +34,24 @@ const LanguagesForm: React.FC<Props> = ({
         <div className="languages-wrapper">
           <div className="languages-form-fields">
             <div className="languages-form-field">
-              <label className="settings-label" htmlFor="learning-languages">
-                {t('profile.languages.welcomeModalFormLabel')}
+              <label className="settings-label" htmlFor="native-languages">
+                {t('profile.languages.nativeLanguagesLabel')}
               </label>
 
-              <LanguageFormField
+              <NativeLanguageFormField
                 languages={languages}
-                languageRelations={languageRelations}
+                nativeLanguages={nativeLanguages}
+                refetch={refetch}
+              />
+            </div>
+            <div className="languages-form-field">
+              <label className="settings-label" htmlFor="learning-languages">
+                {t('profile.languages.learningLanguagesLabel')}
+              </label>
+
+              <LearningLanguageFormField
+                languages={languages}
+                learningLanguages={learningLanguages}
                 refetch={refetch}
               />
             </div>

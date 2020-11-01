@@ -16,14 +16,19 @@ fragment UserWithStatsFragment on User {
 
 fragment UserWithLanguagesFragment on User {
   ...UserFragment
-  languages {
+  languagesLearning {
     id
-    level
     language {
       ...LanguageFragment
     }
   }
- }
+  languagesNative {
+    id
+    language {
+      ...LanguageFragment
+    }
+  }
+}
 
 fragment AuthorFragment on User {
   id
@@ -40,13 +45,17 @@ fragment AuthorWithStatsFragment on User {
 
 fragment AuthorWithLanguagesFragment on User {
   ...AuthorWithStatsFragment
-  languages {
+  languagesLearning {
     language {
       ...LanguageFragment
     }
-    level
   }
- }
+  languagesNative {
+    language {
+      ...LanguageFragment
+    }
+  }
+}
 
 fragment CommentFragment on Comment {
   id
